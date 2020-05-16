@@ -1,7 +1,10 @@
 package com.company.controller;
 
 import com.company.entity.Assignment;
+import com.company.entity.Clause;
 import com.company.entity.Formula;
+
+import java.util.Optional;
 
 public class Checker {
 
@@ -10,10 +13,21 @@ public class Checker {
     }
 
     public boolean is2SAT(Formula formula) {
-        return false;
+        Optional<Clause> violatingClause = formula.getClauses()
+                .stream()
+                .filter(clause -> clause.getLiterals().size() != 2)
+                .findAny();
+        return !violatingClause.isPresent();
     }
 
     public boolean isHornSAT(Formula formula) {
-        return false;
+        boolean violatingClauseFound = formula
+                .getClauses()
+                .stream().anyMatch(clause -> clause
+                        .getLiterals()
+                        .stream()
+                        .filter(literal -> !literal.isNegated())
+                        .count() > 1);
+        return !violatingClauseFound;
     }
 }

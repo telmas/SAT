@@ -2,16 +2,16 @@ package com.company.entity;
 
 public class Literal {
     private int index;
-    private boolean value;
+    private boolean variable;
     private boolean negated;
 
     public Literal() {
 
     }
 
-    public Literal(int index, boolean value, boolean negated) {
+    public Literal(int index, boolean variable, boolean negated) {
         this.index = index;
-        this.value = value;
+        this.variable = variable;
         this.negated = negated;
     }
 
@@ -23,12 +23,12 @@ public class Literal {
         this.index = index;
     }
 
-    public boolean isValue() {
-        return value;
+    public boolean isVariable() {
+        return variable;
     }
 
-    public void setValue(boolean value) {
-        this.value = value;
+    public void setVariable(boolean variable) {
+        this.variable = variable;
     }
 
     public boolean isNegated() {

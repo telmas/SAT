@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.controller.Checker;
 import com.company.controller.Reader;
 import com.company.entity.Formula;
 
@@ -16,5 +17,8 @@ public class Main {
         Reader reader = new Reader(filePathString);
         reader.readTextFileFormula();
         Formula readFormula = reader.getReadFormula();
+        Checker checker = new Checker();
+        System.out.println("is2SAT: " + checker.is2SAT(readFormula));
+        System.out.println("isHornSAT: " + checker.isHornSAT(readFormula));
     }
 }

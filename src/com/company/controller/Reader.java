@@ -9,11 +9,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Reader {
@@ -31,7 +28,7 @@ public class Reader {
                     .map(line -> line.substring(0, line.indexOf('/')).split(", "))
                     .collect(Collectors.toList());
 
-            Formula formula = new Formula();
+
             ArrayList<Clause> clauses = new ArrayList<>();
             collect.stream().skip(2).forEach(stringArray -> {
                 ArrayList<Literal> literals = new ArrayList<>();
@@ -44,6 +41,7 @@ public class Reader {
                 }
                 clauses.add(new Clause(literals));
             });
+            Formula formula = new Formula();
             formula.setClauses(clauses);
             setReadFormula(formula);
         } catch (IOException e) {
