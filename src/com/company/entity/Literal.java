@@ -5,6 +5,10 @@ public class Literal {
     private boolean value;
     private boolean negated;
 
+    public Literal() {
+
+    }
+
     public Literal(int index, boolean value, boolean negated) {
         this.index = index;
         this.value = value;

@@ -1,12 +1,16 @@
 package com.company.controller;
 
+import com.company.entity.Clause;
 import com.company.entity.Formula;
+import com.company.entity.Literal;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -22,20 +26,26 @@ public class Reader {
 
     public void readTextFileFormula() {
         Path filePath = Paths.get(getFilePathString());
-        Pattern pattern = Pattern.compile("\\s+");
         try {
             List<String[]> collect = Files.lines(filePath, StandardCharsets.ISO_8859_1)
-                    .map(line -> line.substring(0, line.indexOf('/')).replaceAll(",", ""))
-                    .map(line -> line.split(" "))
+                    .map(line -> line.substring(0, line.indexOf('/')).split(", "))
                     .collect(Collectors.toList());
 
-            collect.forEach(x -> System.out.println(Arrays.toString(x)));
-
-//            int variablesCount = Integer.parseInt(collect.get(0));
-//            int clausesCount = Integer.parseInt(collect.get(1));
-
-
-//            collect.stream().skip(2).;
+            Formula formula = new Formula();
+            ArrayList<Clause> clauses = new ArrayList<>();
+            collect.stream().skip(2).forEach(stringArray -> {
+                ArrayList<Literal> literals = new ArrayList<>();
+                for (String s : stringArray) {
+                    Literal literal = new Literal();
+                    int index = Integer.parseInt(s.trim());
+                    literal.setIndex(Math.abs(index));
+                    literal.setNegated(index < 0);
+                    literals.add(literal);
+                }
+                clauses.add(new Clause(literals));
+            });
+            formula.setClauses(clauses);
+            setReadFormula(formula);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -5,6 +5,10 @@ import java.util.ArrayList;
 public class Formula {
     private ArrayList<Clause> clauses;
 
+    public Formula() {
+
+    }
+
     public Formula(ArrayList<Clause> clauses) {
         this.clauses = clauses;
     }

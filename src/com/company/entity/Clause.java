@@ -5,6 +5,10 @@ import java.util.ArrayList;
 public class Clause {
     private ArrayList<Literal> literals;
 
+    public Clause() {
+
+    }
+
     public Clause(ArrayList<Literal> literals) {
         this.literals = literals;
     }
