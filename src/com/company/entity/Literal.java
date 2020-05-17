@@ -1,5 +1,7 @@
 package com.company.entity;
 
+import java.util.Objects;
+
 public class Literal {
     private int index;
     private boolean variable;
@@ -37,5 +39,29 @@ public class Literal {
 
     public void setNegated(boolean negated) {
         this.negated = negated;
+    }
+
+    @Override
+    public String toString() {
+        return "Literal{" +
+                "index=" + index +
+                ", variable=" + variable +
+                ", negated=" + negated +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Literal)) return false;
+        Literal literal = (Literal) o;
+        return getIndex() == literal.getIndex() &&
+                isVariable() == literal.isVariable() &&
+                isNegated() == literal.isNegated();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getIndex(), isVariable(), isNegated());
     }
 }
