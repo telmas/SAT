@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Graph<T> {
     private Map<T, List<T>> adjacencyList = new HashMap<>();//todo is DAG safe?
-    private Map<Integer,  List<T>> ccnum;
+    private Map<Integer,  List<T>> ccNum;
     private Map<T, Boolean> visited;
     private TreeMap<Integer,T > pre;
     private TreeMap<Integer, T> post;
@@ -91,18 +91,18 @@ public class Graph<T> {
 
     public void iterateDFS() {
         getAdjacencyList().keySet().forEach(vertex -> {
-            if (!visited.get(vertex)) {
+            if (!getVisited().get(vertex)) {
                 explore(vertex);
-                cc++;
+                setCc(getCc() + 1);
             }
         });
     }
 
     public void explore(T vertex) {
-        visited.put(vertex, true);
+        getVisited().put(vertex, true);
         preVisit(vertex);
         getAdjVertices(vertex).forEach(adjVertex -> {
-            if (!visited.get(adjVertex)) {
+            if (!getVisited().get(adjVertex)) {
                 explore(adjVertex);
             }
         });
@@ -110,41 +110,96 @@ public class Graph<T> {
     }
 
     public void preVisit(T vertex) {
-        if (!ccnum.containsKey(cc)) {
-            ccnum.put(cc, new LinkedList<>());
+        if (!getCcNum().containsKey(getCc())) {
+            getCcNum().put(getCc(), new LinkedList<>());
         }
-        ccnum.get(cc).add(vertex);
-        pre.put(clock++, vertex);
+        getCcNum().get(getCc()).add(vertex);
+        getPre().put(clock++, vertex);
     }
 
     public void postVisit(T vertex) {
-        post.put(clock++, vertex);
+        getPost().put(clock++, vertex);
     }
 
     public void initDFS() {
-        cc = 1;
-        clock = 1;
-        pre = new TreeMap<>();
-        post = new TreeMap<>(Collections.reverseOrder());
-        ccnum = new HashMap<>();
-        visited = new HashMap<>();
+        setPost(new TreeMap<>(Collections.reverseOrder()));
+        setPre(new TreeMap<>());
+        setCcNum(new HashMap<>());
+        setVisited(new HashMap<>());
         getAdjacencyList().keySet().forEach(vertex -> {
-            visited.put(vertex, false);
+            getVisited().put(vertex, false);
         });
+        setClock(1);
+        setCc(1);
     }
 
     public Map<Integer, List<T>> computeSCC() {
         Graph<T> reversedGraph = getReversedGraph();
         reversedGraph.runDepthFirstSearch();
-        TreeMap<Integer, T> post = reversedGraph.post;
+        TreeMap<Integer, T> post = reversedGraph.getPost();
         initDFS();
-        Collection<T> values = post.values();
-        values.forEach(vertex -> {
-            if (!visited.get(vertex)) {
+        post.values().forEach(vertex -> {
+            if (!getVisited().get(vertex)) {
                 explore(vertex);
-                cc++;
+                setCc(getCc() + 1);
             }
         });
-        return ccnum;
+        return getCcNum();
+    }
+
+    public Map<Integer, List<T>> getCcNum() {
+        return ccNum;
+    }
+
+    public void setCcNum(Map<Integer, List<T>> ccNum) {
+        this.ccNum = ccNum;
+    }
+
+    public Map<T, Boolean> getVisited() {
+        return visited;
+    }
+
+    public void setVisited(Map<T, Boolean> visited) {
+        this.visited = visited;
+    }
+
+    public TreeMap<Integer, T> getPre() {
+        return pre;
+    }
+
+    public void setPre(TreeMap<Integer, T> pre) {
+        this.pre = pre;
+    }
+
+    public TreeMap<Integer, T> getPost() {
+        return post;
+    }
+
+    public void setPost(TreeMap<Integer, T> post) {
+        this.post = post;
+    }
+
+    public int getCc() {
+        return cc;
+    }
+
+    public void setCc(int cc) {
+        this.cc = cc;
+    }
+
+    public int getScc() {
+        return scc;
+    }
+
+    public void setScc(int scc) {
+        this.scc = scc;
+    }
+
+    public int getClock() {
+        return clock;
+    }
+
+    public void setClock(int clock) {
+        this.clock = clock;
     }
 }

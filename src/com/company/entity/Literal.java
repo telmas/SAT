@@ -11,6 +11,14 @@ public class Literal {
 
     }
 
+    public Literal(int index) {
+        this(index, false);
+    }
+
+    public Literal(int index, boolean negated) {
+        this(index, false, negated);
+    }
+
     public Literal(int index, boolean variable, boolean negated) {
         this.index = index;
         this.variable = variable;
@@ -63,5 +71,10 @@ public class Literal {
     @Override
     public int hashCode() {
         return Objects.hash(getIndex(), isVariable(), isNegated());
+    }
+
+    public boolean isNegationOf(Literal literal) {
+        return getIndex() == literal.getIndex()
+                && isNegated() != literal.isNegated();
     }
 }

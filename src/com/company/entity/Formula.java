@@ -20,4 +20,8 @@ public class Formula {
     public void setClauses(ArrayList<Clause> clauses) {
         this.clauses = clauses;
     }
+
+    public void getFormulaLiterals() {
+//        getClauses().stream().flatMap()
+    }
 }

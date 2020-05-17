@@ -25,7 +25,8 @@ public class Reader {
         Path filePath = Paths.get(getFilePathString());
         try {
             List<String[]> collect = Files.lines(filePath, StandardCharsets.ISO_8859_1)
-                    .map(line -> line.substring(0, line.indexOf('/')).split(", "))
+//                    .map(line -> line.substring(0, line.indexOf('/')).split(", "))
+                    .map(line -> line.split(", "))
                     .collect(Collectors.toList());
 
 
