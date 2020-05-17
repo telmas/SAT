@@ -16,7 +16,7 @@ public class Checker {
         return !violatingClauseFound;
     }
 
-    public boolean isHornSAT(Formula formula) {//todo is second loop efficient enough
+    public boolean isHornSAT(Formula formula) {//todo is second loop efficient enough--probably not
         boolean violatingClauseFound = formula
                 .getClauses()
                 .stream().anyMatch(clause -> clause
