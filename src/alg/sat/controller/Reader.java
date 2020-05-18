@@ -1,8 +1,8 @@
-package com.company.controller;
+package alg.sat.controller;
 
-import com.company.entity.Clause;
-import com.company.entity.Formula;
-import com.company.entity.Literal;
+import alg.sat.entity.Clause;
+import alg.sat.entity.Formula;
+import alg.sat.entity.Literal;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -29,6 +29,9 @@ public class Reader {
                     .map(line -> line.split(", "))
                     .collect(Collectors.toList());
 
+            Formula formula = new Formula();
+            formula.setVariablesCont(Integer.parseInt(collect.get(0)[0]));
+            formula.setClausesCount(Integer.parseInt(collect.get(1)[0]));
 
             ArrayList<Clause> clauses = new ArrayList<>();
             collect.stream().skip(2).forEach(stringArray -> {
@@ -42,7 +45,6 @@ public class Reader {
                 }
                 clauses.add(new Clause(literals));
             });
-            Formula formula = new Formula();
             formula.setClauses(clauses);
             setReadFormula(formula);
         } catch (IOException e) {

@@ -1,9 +1,9 @@
-package com.company.controller;
+package alg.sat.controller;
 
-import com.company.entity.Assignment;
-import com.company.entity.Clause;
-import com.company.entity.Formula;
-import com.company.entity.Literal;
+import alg.sat.entity.Assignment;
+import alg.sat.entity.Clause;
+import alg.sat.entity.Formula;
+import alg.sat.entity.Literal;
 
 public class Checker {
 
@@ -26,10 +26,11 @@ public class Checker {
         return true;
     }
 
+    //assumed we always have 2 literals per clause
     public boolean is2SAT(Formula formula) {
         boolean violatingClauseFound = false;
         for (Clause clause : formula.getClauses()) {
-            if (clause.getLiterals().size() != 2) {//assumed we always have 2 literals per clause
+            if (clause.getLiterals().size() != 2) {
                 violatingClauseFound = true;
                 break;
             }

@@ -1,20 +1,28 @@
-package com.company.controller;
+package alg.sat.controller;
 
-import com.company.entity.Assignment;
-import com.company.entity.Formula;
-import com.company.entity.Graph;
-import com.company.entity.Literal;
+import alg.sat.entity.Assignment;
+import alg.sat.exception.UnsatisfiableFormulaException;
+import alg.sat.entity.Formula;
+import alg.sat.entity.Graph;
+import alg.sat.entity.Literal;
 
 import java.util.*;
 
 public class Solver {
 
-    public Assignment solveGeneralSAT(Formula formula) {
-        return null;
+    public Assignment solveGeneralSAT(Formula formula) throws UnsatisfiableFormulaException {
+        BitSet bitSet = new BitSet((int) Math.pow(2, formula.getVariablesCont()));
+
+//        todo
+        Checker checker = new Checker();
+        Assignment candidateAssignment = new Assignment();
+//        if (checker.checkAssignment()) {
+//            return candidateAssignment;
+//        };
+        throw new UnsatisfiableFormulaException("Given SAT formula is unsatisfiable");
     }
 
-    public Assignment solve2SAT(Formula formula) {
-
+    public Assignment solve2SAT(Formula formula) throws UnsatisfiableFormulaException {
         Graph<Literal> graph = new Graph<>();
         formula.getClauses().forEach(clause -> {
             ArrayList<Literal> literals = clause.getLiterals();
@@ -68,7 +76,7 @@ public class Solver {
             });
             return candidateAssignment;
         }
-        return null;
+        throw new UnsatisfiableFormulaException("Given 2SAT formula is unsatisfiable");
     }
 
     public Assignment solveHornSAT(Formula formula) {

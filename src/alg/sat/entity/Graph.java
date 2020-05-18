@@ -1,4 +1,4 @@
-package com.company.entity;
+package alg.sat.entity;
 
 import java.util.*;
 

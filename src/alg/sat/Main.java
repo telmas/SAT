@@ -1,18 +1,15 @@
-package com.company;
+package alg.sat;
 
-import com.company.controller.Checker;
-import com.company.controller.Reader;
-import com.company.controller.Solver;
-import com.company.entity.Assignment;
-import com.company.entity.Formula;
-import com.company.entity.Graph;
-import com.company.entity.Literal;
-
-import java.util.*;
+import alg.sat.controller.Checker;
+import alg.sat.controller.Reader;
+import alg.sat.controller.Solver;
+import alg.sat.entity.Assignment;
+import alg.sat.entity.Formula;
+import alg.sat.exception.UnsatisfiableFormulaException;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsatisfiableFormulaException {
 
         if (args.length < 1 || args[0] == null || args[0].trim().equals("") || args[0].isEmpty()) {
             System.out.printf("%s", "Attention! The required file path is not passed as argument!");
@@ -33,6 +30,8 @@ public class Main {
         assignment.getSolution().put(1, !assignment.getSolution().get(1));
         System.out.println(assignment);
         System.out.println(checker.checkAssignment(readFormula, assignment));
+        Assignment assignment2 = solver.solveGeneralSAT(readFormula);
+
 //
 //        ArrayList<Literal> literals = new ArrayList<>();
 //        readFormula.getClauses().forEach(x -> {
