@@ -8,22 +8,28 @@ import com.company.entity.Literal;
 public class Checker {
 
     public boolean checkAssignment(Formula formula, Assignment assignment) {
-//        formula.getClauses().forEach(clause -> {
-//            boolean evaluatedClause = true;
-//            clause.getLiterals().forEach(literal -> {
-//                Boolean literalValue = assignment.getSolution().get(literal.getIndex());
-//                evaluatedClause
-//
-//            });
-//        });
-        //todo
-        return false;
+        boolean satisfied = true;
+        for (Clause clause : formula.getClauses()) {
+            boolean evaluatedClause = false;
+            for (Literal literal : clause.getLiterals()) {
+                Boolean literalSolutionValue = assignment.getSolution().get(literal.getIndex());
+                evaluatedClause = evaluatedClause || (literal.isNegated() ? !literalSolutionValue : literalSolutionValue);
+                if (evaluatedClause) {
+                    break;
+                }
+            }
+            satisfied = satisfied && evaluatedClause;
+            if (!satisfied) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean is2SAT(Formula formula) {
         boolean violatingClauseFound = false;
         for (Clause clause : formula.getClauses()) {
-            if (clause.getLiterals().size() != 2) {
+            if (clause.getLiterals().size() != 2) {//assumed we always have 2 literals per clause
                 violatingClauseFound = true;
                 break;
             }

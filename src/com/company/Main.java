@@ -30,7 +30,9 @@ public class Main {
         Solver solver = new Solver();
         Assignment assignment = solver.solve2SAT(readFormula);
         System.out.println(assignment);
-        checker.checkAssignment(readFormula, assignment);
+        assignment.getSolution().put(1, !assignment.getSolution().get(1));
+        System.out.println(assignment);
+        System.out.println(checker.checkAssignment(readFormula, assignment));
 //
 //        ArrayList<Literal> literals = new ArrayList<>();
 //        readFormula.getClauses().forEach(x -> {
