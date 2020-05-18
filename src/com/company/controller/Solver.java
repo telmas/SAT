@@ -54,10 +54,11 @@ public class Solver {
             Integer sccKey2 = literalSCCKeyMap.get(negatedLiteral);
             if (sccKey1.equals(sccKey2)) {
                 satisfiable = false;
+                break;
             }
         }
 
-        if (satisfiable) {
+        if (satisfiable) {//todo fix assignment solution
             Assignment candidateAssignment = new Assignment(literalSet.size());
             TreeMap<Integer, Literal> post = graph.getPost();
             System.out.println(post);
