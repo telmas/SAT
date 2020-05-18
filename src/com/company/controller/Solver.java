@@ -58,12 +58,13 @@ public class Solver {
             }
         }
 
-        if (satisfiable) {//todo fix assignment solution
-            Assignment candidateAssignment = new Assignment(literalSet.size());
+        if (satisfiable) {
+            Assignment candidateAssignment = new Assignment();
             TreeMap<Integer, Literal> post = graph.getPost();
-            System.out.println(post);
-            post.values().forEach(vertex -> {
-                candidateAssignment.getSolution()[vertex.getIndex() - 1] = !vertex.isNegated();
+            TreeMap<Integer, Literal> reversePost = new TreeMap<>();
+            reversePost.putAll(post);//don't change
+            reversePost.values().forEach(vertex -> {
+                candidateAssignment.getSolution().putIfAbsent(vertex.getIndex(), !vertex.isNegated());
             });
             return candidateAssignment;
         }

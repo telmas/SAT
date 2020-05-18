@@ -3,7 +3,7 @@ package com.company.entity;
 import java.util.*;
 
 public class Graph<T> {
-    private Map<T, List<T>> adjacencyList = new HashMap<>();//todo is DAG safe?
+    private Map<T, List<T>> adjacencyList = new HashMap<>();
     private Map<Integer,  List<T>> ccNum;
     private Map<T, Boolean> visited;
     private TreeMap<Integer,T > pre;
