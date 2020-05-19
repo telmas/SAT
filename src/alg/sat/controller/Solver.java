@@ -1,24 +1,27 @@
 package alg.sat.controller;
 
 import alg.sat.entity.Assignment;
-import alg.sat.exception.UnsatisfiableFormulaException;
 import alg.sat.entity.Formula;
 import alg.sat.entity.Graph;
 import alg.sat.entity.Literal;
+import alg.sat.exception.UnsatisfiableFormulaException;
 
+import java.math.BigInteger;
 import java.util.*;
 
 public class Solver {
 
     public Assignment solveGeneralSAT(Formula formula) throws UnsatisfiableFormulaException {
-        BitSet bitSet = new BitSet((int) Math.pow(2, formula.getVariablesCont()));
-
-//        todo
         Checker checker = new Checker();
-        Assignment candidateAssignment = new Assignment();
-//        if (checker.checkAssignment()) {
-//            return candidateAssignment;
-//        };
+        for (BigInteger bi = BigInteger.valueOf(0);
+             bi.compareTo(BigInteger.valueOf((long) Math.pow(2, formula.getVariablesCont()))) < 0;
+             bi = bi.add(BigInteger.ONE)) {
+            BitSet bitSet = BitSet.valueOf(new long[]{bi.longValue()});
+            Assignment assignment = new Assignment(formula, bitSet);
+            if (checker.checkAssignment(formula, assignment)) {
+                return assignment;
+            }
+        }
         throw new UnsatisfiableFormulaException("Given SAT formula is unsatisfiable");
     }
 

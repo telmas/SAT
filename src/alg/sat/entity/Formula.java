@@ -1,6 +1,7 @@
 package alg.sat.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Formula {
     private int clausesCount;
@@ -37,5 +38,16 @@ public class Formula {
 
     public void setVariablesCont(int variablesCont) {
         this.variablesCont = variablesCont;
+    }
+
+    public List<Integer> getLiteralIndexes() {
+        List<Integer> list = new ArrayList<>();
+        for (Clause clause : getClauses()) {
+            for (Literal literal : clause.getLiterals()) {
+                Integer index = literal.getIndex();
+                list.add(index);
+            }
+        }
+        return list;
     }
 }

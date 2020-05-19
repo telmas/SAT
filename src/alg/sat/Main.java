@@ -27,40 +27,10 @@ public class Main {
         Solver solver = new Solver();
         Assignment assignment = solver.solve2SAT(readFormula);
         System.out.println(assignment);
-        assignment.getSolution().put(1, !assignment.getSolution().get(1));
-        System.out.println(assignment);
+        System.out.print("Formula satisfied? ");
         System.out.println(checker.checkAssignment(readFormula, assignment));
         Assignment assignment2 = solver.solveGeneralSAT(readFormula);
-
-//
-//        ArrayList<Literal> literals = new ArrayList<>();
-//        readFormula.getClauses().forEach(x -> {
-//            literals.addAll(x.getLiterals());
-//        });
-//        Graph<Literal> graph = new Graph<>();
-//        Map<Literal, List<Literal>> map = new HashMap<>();
-//        LinkedList<Literal> literals1 = new LinkedList<>();
-//        literals1.add(literals.get(1));
-//        map.put(literals.get(0), literals1);
-//        literals1 = new LinkedList<>();
-//        literals1.add(literals.get(2));
-//        literals1.add(literals.get(3));
-//        literals1.add(literals.get(4));
-//        map.put(literals.get(1), literals1);
-//        literals1 = new LinkedList<>();
-//        literals1.add(literals.get(5));
-//        map.put(literals.get(2), literals1);
-//        literals1 = new LinkedList<>();
-//        map.put(literals.get(3), literals1);
-//        literals1 = new LinkedList<>();
-//        literals1.add(literals.get(1));
-//        literals1.add(literals.get(5));
-//        map.put(literals.get(4), literals1);
-//        literals1 = new LinkedList<>();
-//        literals1.add(literals.get(2));
-//        map.put(literals.get(5), literals1);
-//        graph.setAdjacencyList(map);
-//        Map<Integer, List<Literal>> computeSCC = graph.computeSCC();
-//        System.out.println(computeSCC.toString());
+        System.out.println("Brute Force Solution:");
+        System.out.println(assignment2);
     }
 }
