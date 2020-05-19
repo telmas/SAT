@@ -15,7 +15,7 @@ public class Assignment {
     public Assignment(Formula formula, BitSet bitSet) {
         HashMap<Integer, Boolean> map = new HashMap<>();
         List<Integer> literalIndexes = formula.getLiteralIndexes();//-----> kjo n^2
-        literalIndexes.forEach(integer -> map.putIfAbsent(integer, bitSet.get(integer - 1)));
+        literalIndexes.forEach(index -> map.putIfAbsent(index, bitSet.get(index - 1)));
         this.setSolution(map);
     }
 
