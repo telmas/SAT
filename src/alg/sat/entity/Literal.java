@@ -33,7 +33,7 @@ public class Literal {
         this.index = index;
     }
 
-    public boolean isVariable() {
+    public boolean isVariableTrue() {
         return variable;
     }
 
@@ -64,13 +64,13 @@ public class Literal {
         if (!(o instanceof Literal)) return false;
         Literal literal = (Literal) o;
         return getIndex() == literal.getIndex() &&
-                isVariable() == literal.isVariable() &&
+                isVariableTrue() == literal.isVariableTrue() &&
                 isNegated() == literal.isNegated();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getIndex(), isVariable(), isNegated());
+        return Objects.hash(getIndex(), isVariableTrue(), isNegated());
     }
 
     public boolean isNegationOf(Literal literal) {

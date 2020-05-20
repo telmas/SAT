@@ -1,13 +1,11 @@
 package alg.sat.controller;
 
-import alg.sat.entity.Assignment;
-import alg.sat.entity.Formula;
-import alg.sat.entity.Graph;
-import alg.sat.entity.Literal;
+import alg.sat.entity.*;
 import alg.sat.exception.UnsatisfiableFormulaException;
 
 import java.math.BigInteger;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Solver {
 
@@ -82,7 +80,21 @@ public class Solver {
         throw new UnsatisfiableFormulaException("Given 2SAT formula is unsatisfiable");
     }
 
-    public Assignment solveHornSAT(Formula formula) {
-        return null;
+    public Assignment solveHornSAT(Formula formula) throws UnsatisfiableFormulaException {
+        Assignment assignment = new Assignment();
+
+        List<Clause> noTailClauses = formula.getClauses().stream().filter(clause -> clause.getLiterals().size() == 1).collect(Collectors.toList());
+        Queue<Clause> noTailQueue = new PriorityQueue<>().addAll();
+        noTailQueue.addAll(noTailClauses);
+
+        while (!noTailQueue.isEmpty()) {
+            Clause noTailClause = noTailQueue.remove();
+            Literal singleLiteral = noTailClause.getLiterals().get(0);
+            if (singleLiteral.isVariableTrue()) {
+                continue;
+            }
+            assignment.getSolution().put(singleLiteral.getIndex(), true);
+        }
+        throw new UnsatisfiableFormulaException("Given HornSAT formula is unsatisfiable");
     }
 }
