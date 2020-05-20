@@ -5,7 +5,6 @@ import alg.sat.exception.UnsatisfiableFormulaException;
 
 import java.math.BigInteger;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Solver {
 
@@ -41,9 +40,7 @@ public class Solver {
         computedSCCs.keySet().forEach(key -> computedSCCs.get(key).forEach(literal -> literalSCCKeyMap.put(literal, key)));
 
         Set<Literal> literalSet = new HashSet<>();
-        formula.getClauses().forEach(clause -> {
-            literalSet.addAll(clause.getLiterals());
-        });
+        formula.getClauses().forEach(clause -> literalSet.addAll(clause.getLiterals()));
 
         boolean satisfiable = true;
         for (Literal literal : literalSet) {
@@ -68,9 +65,7 @@ public class Solver {
             TreeMap<Integer, Literal> post = graph.getPost();
             TreeMap<Integer, Literal> reversePost = new TreeMap<>();
             reversePost.putAll(post);//don't change
-            reversePost.values().forEach(vertex -> {
-                candidateAssignment.getSolution().putIfAbsent(vertex.getIndex(), !vertex.isNegated());
-            });
+            reversePost.values().forEach(vertex -> candidateAssignment.getSolution().putIfAbsent(vertex.getIndex(), !vertex.isNegated()));
             return candidateAssignment;
         }
         throw new UnsatisfiableFormulaException("Given 2SAT formula is unsatisfiable");
@@ -79,21 +74,21 @@ public class Solver {
     public Assignment solveHornSAT(Formula formula) throws UnsatisfiableFormulaException {
 
         Set<Literal> literalSet = new HashSet<>();
-        formula.getClauses().forEach(clause -> {
-            literalSet.addAll(clause.getLiterals());
-        });
+        formula.getClauses().forEach(clause -> literalSet.addAll(clause.getLiterals()));
         Assignment candidateAssignment = new Assignment();
 
-        literalSet.forEach(literal -> {
-            candidateAssignment.getSolution().put(literal.getIndex(), false);
-        });
+        literalSet.forEach(literal -> candidateAssignment.getSolution().put(literal.getIndex(), false));
+
+//        for (int i = 1; i <= formula.getVariablesCont(); i++) {
+//            candidateAssignment.getSolution().put(i, false);
+//        }
+
         boolean unsatisfiedImplicationPresent;
         do {
             unsatisfiedImplicationPresent = false;
             Literal literal = null;
             ArrayList<Clause> clauses = formula.getClauses();
-            for (int i = 0, clausesSize = clauses.size(); i < clausesSize; i++) {
-                Clause clause = clauses.get(i);
+            for (Clause clause : clauses) {
                 literal = clause.getLiterals().get(0);
                 if (clause.getLiterals().size() == 1 && !literal.isNegated()) {
                     formula.getClauses().remove(clause);

@@ -8,7 +8,7 @@ import alg.sat.entity.Literal;
 public class Checker {
 
     public boolean checkAssignment(Formula formula, Assignment assignment) {
-        boolean satisfied = true;
+        boolean satisfied;
         for (Clause clause : formula.getClauses()) {
             boolean evaluatedClause = false;
             for (Literal literal : clause.getLiterals()) {
