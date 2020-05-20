@@ -30,7 +30,8 @@ public class Main {
 //            System.out.println(assignment);
 //            System.out.print("Formula satisfied? ");
 //            System.out.println(checker.checkAssignment(readFormula, assignment));
-            assignment = solver.solveHornSAT(readFormula);
+//            assignment = solver.solveHornSAT(readFormula);
+            assignment = solver.solveHornSATLinear(readFormula);
             System.out.println(assignment);
             System.out.print("Formula satisfied? ");
             System.out.println(checker.checkAssignment(readFormula, assignment));

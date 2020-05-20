@@ -38,11 +38,7 @@ public class Solver {
         Map<Integer, List<Literal>> computedSCCs = graph.computeSCC();
         Map<Literal, Integer> literalSCCKeyMap = new HashMap<>();
 
-        computedSCCs.keySet().forEach(key -> {
-            computedSCCs.get(key).forEach(literal -> {
-                literalSCCKeyMap.put(literal, key);
-            });
-        });
+        computedSCCs.keySet().forEach(key -> computedSCCs.get(key).forEach(literal -> literalSCCKeyMap.put(literal, key)));
 
         Set<Literal> literalSet = new HashSet<>();
         formula.getClauses().forEach(clause -> {
@@ -129,21 +125,44 @@ public class Solver {
             }
         }
         return candidateAssignment;
+    }
 
-//        Assignment assignment = new Assignment();
-//
-//        List<Clause> noTailClauses = formula.getClauses().stream().filter(clause -> clause.getLiterals().size() == 1).collect(Collectors.toList());
-//        Queue<Clause> noTailQueue = new PriorityQueue<>().addAll();
-//        noTailQueue.addAll(noTailClauses);
-//
-//        while (!noTailQueue.isEmpty()) {
-//            Clause noTailClause = noTailQueue.remove();
-//            Literal singleLiteral = noTailClause.getLiterals().get(0);
-//            if (singleLiteral.getVariableBooleanValue()) {
-//                continue;
-//            }
-//            assignment.getSolution().put(singleLiteral.getIndex(), true);
-//        }
-//        throw new UnsatisfiableFormulaException("Given HornSAT formula is unsatisfiable");
+    public Assignment solveHornSATLinear(Formula formula) throws UnsatisfiableFormulaException {
+
+        Assignment assignment = new Assignment();
+
+        for (int i = 1; i <= formula.getVariablesCont(); i++) {
+            assignment.getSolution().put(i, false);
+        }
+
+        ArrayList<Integer> noTailClauseLiteralIndexes = formula.getNoTailClauseLiteralIndexes();
+        while (!noTailClauseLiteralIndexes.isEmpty()) {
+            Integer index = noTailClauseLiteralIndexes.remove(0);
+            assignment.getSolution().put(index, true);
+
+            for (Clause clause : formula.getImplicationLeftSideLiteralIndexesMap().get(index)) {
+                clause.getLiterals().remove(new Literal(index, true));
+                if (clause.getLiterals().size() == 1 && !clause.getLiterals().get(0).isNegated()) {
+                    noTailClauseLiteralIndexes.add(clause.getLiterals().get(0).getIndex());
+                }
+            }
+        }
+
+        for (Clause clause : formula.getClauses()) {
+            if (clause.getLiterals().stream().allMatch(Literal::isNegated)) {
+                boolean expression = false;
+                for (Literal literal :clause.getLiterals()) {
+                    expression = !assignment.getSolution().get(literal.getIndex());
+                    if (expression) {
+                        break;
+                    }
+                }
+                if(!expression) {
+                    throw new UnsatisfiableFormulaException("Given HornSAT formula is unsatisfiable");
+                }
+            }
+        }
+
+        return assignment;
     }
 }
