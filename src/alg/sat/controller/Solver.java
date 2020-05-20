@@ -81,20 +81,69 @@ public class Solver {
     }
 
     public Assignment solveHornSAT(Formula formula) throws UnsatisfiableFormulaException {
-        Assignment assignment = new Assignment();
 
-        List<Clause> noTailClauses = formula.getClauses().stream().filter(clause -> clause.getLiterals().size() == 1).collect(Collectors.toList());
-        Queue<Clause> noTailQueue = new PriorityQueue<>().addAll();
-        noTailQueue.addAll(noTailClauses);
+        Set<Literal> literalSet = new HashSet<>();
+        formula.getClauses().forEach(clause -> {
+            literalSet.addAll(clause.getLiterals());
+        });
+        Assignment candidateAssignment = new Assignment();
 
-        while (!noTailQueue.isEmpty()) {
-            Clause noTailClause = noTailQueue.remove();
-            Literal singleLiteral = noTailClause.getLiterals().get(0);
-            if (singleLiteral.isVariableTrue()) {
-                continue;
+        literalSet.forEach(literal -> {
+            candidateAssignment.getSolution().put(literal.getIndex(), false);
+        });
+        boolean unsatisfiedImplicationPresent;
+        do {
+            unsatisfiedImplicationPresent = false;
+            Literal literal = null;
+            ArrayList<Clause> clauses = formula.getClauses();
+            for (int i = 0, clausesSize = clauses.size(); i < clausesSize; i++) {
+                Clause clause = clauses.get(i);
+                literal = clause.getLiterals().get(0);
+                if (clause.getLiterals().size() == 1 && !literal.isNegated()) {
+                    formula.getClauses().remove(clause);
+                    candidateAssignment.getSolution().put(literal.getIndex(), true);
+                    unsatisfiedImplicationPresent = true;
+                    break;
+                }
             }
-            assignment.getSolution().put(singleLiteral.getIndex(), true);
+            if (unsatisfiedImplicationPresent) {
+                for (Clause clause : formula.getClauses()) {
+                    Literal inverseNegationLiteral = new Literal(literal.getIndex(), !literal.isNegated());
+                    clause.getLiterals().remove(inverseNegationLiteral);
+                }
+            }
+        } while (unsatisfiedImplicationPresent);
+
+        for (Clause clause : formula.getClauses()) {
+            if (clause.getLiterals().stream().allMatch(Literal::isNegated)) {
+                boolean expression = false;
+                for (Literal literal :clause.getLiterals()) {
+                    expression = !candidateAssignment.getSolution().get(literal.getIndex());
+                    if (expression) {
+                        break;
+                    }
+                }
+                if(!expression) {
+                    throw new UnsatisfiableFormulaException("Given HornSAT formula is unsatisfiable");
+                }
+            }
         }
-        throw new UnsatisfiableFormulaException("Given HornSAT formula is unsatisfiable");
+        return candidateAssignment;
+
+//        Assignment assignment = new Assignment();
+//
+//        List<Clause> noTailClauses = formula.getClauses().stream().filter(clause -> clause.getLiterals().size() == 1).collect(Collectors.toList());
+//        Queue<Clause> noTailQueue = new PriorityQueue<>().addAll();
+//        noTailQueue.addAll(noTailClauses);
+//
+//        while (!noTailQueue.isEmpty()) {
+//            Clause noTailClause = noTailQueue.remove();
+//            Literal singleLiteral = noTailClause.getLiterals().get(0);
+//            if (singleLiteral.getVariableBooleanValue()) {
+//                continue;
+//            }
+//            assignment.getSolution().put(singleLiteral.getIndex(), true);
+//        }
+//        throw new UnsatisfiableFormulaException("Given HornSAT formula is unsatisfiable");
     }
 }

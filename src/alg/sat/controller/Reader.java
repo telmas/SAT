@@ -36,14 +36,25 @@ public class Reader {
             ArrayList<Clause> clauses = new ArrayList<>();
             collect.stream().skip(2).forEach(stringArray -> {
                 ArrayList<Literal> literals = new ArrayList<>();
+                Clause clause = new Clause();
                 for (String s : stringArray) {
                     Literal literal = new Literal();
                     int index = Integer.parseInt(s.trim());
-                    literal.setIndex(Math.abs(index));
-                    literal.setNegated(index < 0);
+                    int absoluteIndex = Math.abs(index);
+                    boolean isNegated = index < 0;
+                    literal.setIndex(absoluteIndex);
+                    literal.setNegated(isNegated);
                     literals.add(literal);
+
+                    if (isNegated) {
+                        formula.addClauseContainingNegatedLiteral(absoluteIndex, clause);
+                    }
                 }
-                clauses.add(new Clause(literals));
+                clause.setLiterals(literals);
+                if (clause.getLiterals().size() == 1 && !clause.getLiterals().get(0).isNegated()) {
+                    formula.getNoTailClauseLiteralIndexes().add(clause.getLiterals().get(0).getIndex());
+                }
+                clauses.add(clause);
             });
             formula.setClauses(clauses);
             setReadFormula(formula);

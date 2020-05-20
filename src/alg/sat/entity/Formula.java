@@ -1,19 +1,28 @@
 package alg.sat.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Formula {
     private int clausesCount;
     private int variablesCont;
     private ArrayList<Clause> clauses;
+    private ArrayList<Integer> noTailClauseLiteralIndexes;
+    private Map<Integer, HashSet<Clause>> implicationLeftSideLiteralIndexesMap;
 
     public Formula() {
-
+        clauses = new ArrayList<>();
+        noTailClauseLiteralIndexes = new ArrayList<>();
+        implicationLeftSideLiteralIndexesMap = new HashMap<>();
     }
 
-    public Formula(ArrayList<Clause> clauses) {
-        this.clauses = clauses;
+    public void addClauseContainingNegatedLiteral(int i, Clause clause) {
+        if (implicationLeftSideLiteralIndexesMap.containsKey(i)) {
+            implicationLeftSideLiteralIndexesMap.get(i).add(clause);
+        } else {
+            HashSet<Clause> clauses = new HashSet<>();
+            clauses.add(clause);
+            implicationLeftSideLiteralIndexesMap.put(i, clauses);
+        }
     }
 
     public ArrayList<Clause> getClauses() {
@@ -49,5 +58,21 @@ public class Formula {
             }
         }
         return list;
+    }
+
+    public ArrayList<Integer> getNoTailClauseLiteralIndexes() {
+        return noTailClauseLiteralIndexes;
+    }
+
+    public void setNoTailClauseLiteralIndexes(ArrayList<Integer> noTailClauseLiteralIndexes) {
+        this.noTailClauseLiteralIndexes = noTailClauseLiteralIndexes;
+    }
+
+    public Map<Integer, HashSet<Clause>> getImplicationLeftSideLiteralIndexesMap() {
+        return implicationLeftSideLiteralIndexesMap;
+    }
+
+    public void setImplicationLeftSideLiteralIndexesMap(Map<Integer, HashSet<Clause>> implicationLeftSideLiteralIndexesMap) {
+        this.implicationLeftSideLiteralIndexesMap = implicationLeftSideLiteralIndexesMap;
     }
 }
