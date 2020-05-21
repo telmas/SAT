@@ -26,24 +26,7 @@ public class Checker {
         return true;
     }
 
-
-//    public boolean checkAssignment(Formula formula, Assignment assignment) {
-//        for (Clause clause : formula.getClauses()) {
-//            boolean evaluatedClause;
-//            for (Literal literal : clause.getLiterals()) {
-//                Boolean literalSolutionValue = assignment.getSolution().get(literal.getIndex());
-//                if (literalSolutionValue && !literal.isNegated()) {
-//                    break;
-//                }
-//                evaluatedClause = literal.isNegated() ? !literalSolutionValue : literalSolutionValue;
-//                if (evaluatedClause) {
-//                    return false;
-//                }
-//            }
-//        }
-//        return true;
-//    }
-    //assumed we always have 2 literals per clause
+    //assumption: always 2 literals per clause
     public boolean is2SAT(Formula formula) {
         boolean violatingClauseFound = false;
         for (Clause clause : formula.getClauses()) {

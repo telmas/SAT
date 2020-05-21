@@ -79,10 +79,6 @@ public class Solver {
 
         literalSet.forEach(literal -> candidateAssignment.getSolution().put(literal.getIndex(), false));
 
-//        for (int i = 1; i <= formula.getVariablesCont(); i++) {
-//            candidateAssignment.getSolution().put(i, false);
-//        }
-
         boolean unsatisfiedImplicationPresent;
         do {
             unsatisfiedImplicationPresent = false;
@@ -161,7 +157,6 @@ public class Solver {
                 }
             }
         }
-
         return assignment;
     }
 }
