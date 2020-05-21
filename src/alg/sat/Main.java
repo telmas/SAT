@@ -30,8 +30,9 @@ public class Main {
                 printAndValidateAssignment(readFormula, assignment, checker);
             } else if (checker.isHornSAT(readFormula)) {
                 System.out.println("Given CNF is: HornSAT");
-                assignment = solver.solveHornSAT(readFormula);
-                printAndValidateAssignment(readFormula, assignment, checker);
+                Formula newFormula = new Formula(readFormula);
+                assignment = solver.solveHornSAT(newFormula);
+                printAndValidateAssignment(newFormula, assignment, checker);
                 assignment = solver.solveHornSATLinear(readFormula);
                 printAndValidateAssignment(readFormula, assignment, checker);
             } else {

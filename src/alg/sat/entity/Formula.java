@@ -15,6 +15,14 @@ public class Formula {
         implicationLeftSideLiteralIndexesMap = new HashMap<>();
     }
 
+    public Formula(Formula formula) {
+        setVariablesCont(formula.getVariablesCont());
+        setClausesCount(formula.getClausesCount());
+        setClauses(new ArrayList<>(formula.getClauses()));
+        setImplicationLeftSideLiteralIndexesMap(new HashMap<>(formula.getImplicationLeftSideLiteralIndexesMap()));
+        setNoTailClauseLiteralIndexes(new ArrayList<>(formula.getNoTailClauseLiteralIndexes()));
+    }
+
     public void addClauseContainingNegatedLiteral(int i, Clause clause) {
         if (implicationLeftSideLiteralIndexesMap.containsKey(i)) {
             implicationLeftSideLiteralIndexesMap.get(i).add(clause);
