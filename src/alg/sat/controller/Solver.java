@@ -135,10 +135,14 @@ public class Solver {
             Integer index = noTailClauseLiteralIndexes.remove(0);
             assignment.getSolution().put(index, true);
 
-            for (Clause clause : formula.getImplicationLeftSideLiteralIndexesMap().get(index)) {
-                clause.getLiterals().remove(new Literal(index, true));
-                if (clause.getLiterals().size() == 1 && !clause.getLiterals().get(0).isNegated()) {
-                    noTailClauseLiteralIndexes.add(clause.getLiterals().get(0).getIndex());
+            if (!formula.getImplicationLeftSideLiteralIndexesMap().isEmpty()) {
+                for (Clause clause : formula.getImplicationLeftSideLiteralIndexesMap().get(index)) {
+                    clause.getLiterals().remove(new Literal(index, true));
+                    if (clause.getLiterals().size() == 1 &&
+                            !clause.getLiterals().get(0).isNegated() &&
+                            clause.getLiterals().get(0).getIndex() != index) {
+                        noTailClauseLiteralIndexes.add(clause.getLiterals().get(0).getIndex());
+                    }
                 }
             }
         }
