@@ -1,6 +1,7 @@
 package alg.sat.entity;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Formula {
     private int clausesCount;
@@ -57,13 +58,21 @@ public class Formula {
         this.variablesCont = variablesCont;
     }
 
-    public List<Integer> getLiteralIndexes() {
+    public List<Integer> getAllLiteralIndexes() {
         List<Integer> list = new ArrayList<>();
         for (Clause clause : getClauses()) {
             for (Literal literal : clause.getLiterals()) {
                 Integer index = literal.getIndex();
                 list.add(index);
             }
+        }
+        return list;
+    }
+
+    public List<Literal> getAllLiterals() {
+        List<Literal> list = new ArrayList<>();
+        for (Clause clause : getClauses()) {
+            list.addAll(clause.getLiterals());
         }
         return list;
     }
@@ -82,5 +91,17 @@ public class Formula {
 
     public void setImplicationLeftSideLiteralIndexesMap(Map<Integer, HashSet<Clause>> implicationLeftSideLiteralIndexesMap) {
         this.implicationLeftSideLiteralIndexesMap = implicationLeftSideLiteralIndexesMap;
+    }
+
+    public List<Clause> getUnitClauses() {
+        return getClauses().stream().filter(clause -> clause.getLiterals().size() == 1).collect(Collectors.toList());
+    }
+
+    public Set<Literal> getPureLiterals() {
+        List<Literal> allLiterals = getAllLiterals();
+        return allLiterals
+                .stream()
+                .filter(literal -> Collections.frequency(allLiterals, new Literal(literal.getIndex(), !literal.isNegated())) == 0)
+                .collect(Collectors.toSet());
     }
 }

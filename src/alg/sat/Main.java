@@ -38,8 +38,11 @@ public class Main {
             } else {
                 System.out.println("Given CNF is: Undefined");
             }
-            System.out.println("Brute Force Solution:");
-            assignment = solver.solveGeneralSAT(readFormula);
+            System.out.println("Brute Force Solution (Classic):");
+            assignment = solver.solveGeneralSATBruteForceClassic(readFormula);
+            printAndValidateAssignment(readFormula, assignment, checker);
+            System.out.println("Brute Force Solution (DPLL):");
+            assignment = solver.solveGeneralSATBruteForceDPLL(readFormula);
             printAndValidateAssignment(readFormula, assignment, checker);
         } catch (UnsatisfiableFormulaException e) {
             e.printStackTrace();

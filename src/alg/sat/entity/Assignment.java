@@ -14,7 +14,7 @@ public class Assignment {
 
     public Assignment(Formula formula, BitSet bitSet) {
         HashMap<Integer, Boolean> map = new HashMap<>();
-        List<Integer> literalIndexes = formula.getLiteralIndexes();
+        List<Integer> literalIndexes = formula.getAllLiteralIndexes();
         literalIndexes.forEach(index -> map.putIfAbsent(index, bitSet.get(index - 1)));
         this.setSolution(map);
     }

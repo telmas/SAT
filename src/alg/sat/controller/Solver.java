@@ -5,10 +5,11 @@ import alg.sat.exception.UnsatisfiableFormulaException;
 
 import java.math.BigInteger;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Solver {
 
-    public Assignment solveGeneralSAT(Formula formula) throws UnsatisfiableFormulaException {
+    public Assignment solveGeneralSATBruteForceClassic(Formula formula) throws UnsatisfiableFormulaException {
         Checker checker = new Checker();
         for (BigInteger bi = BigInteger.valueOf(0);
              bi.compareTo(BigInteger.valueOf((long) Math.pow(2, formula.getVariablesCont()))) < 0;
@@ -119,9 +120,7 @@ public class Solver {
     }
 
     public Assignment solveHornSATLinear(Formula formula) throws UnsatisfiableFormulaException {
-
         Assignment assignment = new Assignment();
-
         for (int i = 1; i <= formula.getVariablesCont(); i++) {
             assignment.getSolution().put(i, false);
         }
@@ -158,5 +157,61 @@ public class Solver {
             }
         }
         return assignment;
+    }
+
+    public Assignment solveGeneralSATBruteForceDPLL(Formula formula) throws UnsatisfiableFormulaException {
+        Assignment assignment = new Assignment();
+        for (int i = 1; i <= formula.getVariablesCont(); i++) {
+            assignment.getSolution().put(i, false);
+        }
+        if (booleanSolveGeneralSATBruteForceDPLL(formula, assignment)) {
+            return assignment;
+        }
+        throw new UnsatisfiableFormulaException("Given SAT formula is unsatisfiable");
+    }
+
+    public boolean booleanSolveGeneralSATBruteForceDPLL(Formula formula, Assignment assignment) {
+
+        if (formula.getClauses().size() == 0) {
+            return true;
+        }
+        if (formula.getClauses().stream().anyMatch(clause -> clause.getLiterals().size() == 0)) {
+            return false;
+        }
+
+        List<Literal> allLiterals = formula.getAllLiterals();
+        List<Clause> unitClauses = formula.getUnitClauses();
+        Set<Literal> pureLiterals = allLiterals.stream()
+                .filter(literal -> Collections.frequency(allLiterals, new Literal(literal.getIndex(), !literal.isNegated())) == 0)
+                .collect(Collectors.toSet());
+
+        for (Clause unitClaus : unitClauses) {
+            unitPropagate(unitClaus.getLiterals().get(0), formula, assignment);
+        }
+        pureLiterals.forEach(literal -> pureLiteralElimination(literal, formula, assignment));
+
+        Collections.shuffle(formula.getAllLiterals());
+        Literal chosenLiteral = allLiterals.get(0);
+        Literal negatedLiteral = new Literal(chosenLiteral.getIndex(), !chosenLiteral.isNegated());
+
+        return booleanSolveGeneralSATBruteForceDPLL(formula, assignment) && chosenLiteral.getLiteralTrueByNegationStatus()
+                || booleanSolveGeneralSATBruteForceDPLL(formula, assignment) && negatedLiteral.getLiteralTrueByNegationStatus();
+    }
+
+    private void unitPropagate(Literal literal, Formula formula, Assignment assignment) {
+        assignment.getSolution().put(literal.getIndex(), literal.getLiteralTrueByNegationStatus());
+        formula.getClauses().removeIf(clause -> clause.getLiterals().contains(literal));
+
+        for (Clause clause : formula.getClauses()) {
+            Literal negatedLiteral = new Literal(literal.getIndex(), !literal.isNegated());
+            if (clause.getLiterals().contains(negatedLiteral)) {
+                formula.getClauses().remove(clause);
+            }
+        }
+    }
+
+    private void pureLiteralElimination(Literal literal, Formula formula, Assignment assignment) {
+        assignment.getSolution().put(literal.getIndex(), literal.getLiteralTrueByNegationStatus());
+        formula.getClauses().removeIf(clause -> clause.getLiterals().contains(literal));
     }
 }

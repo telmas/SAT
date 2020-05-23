@@ -64,17 +64,21 @@ public class Literal {
         if (!(o instanceof Literal)) return false;
         Literal literal = (Literal) o;
         return getIndex() == literal.getIndex() &&
-                getVariableBooleanValue() == literal.getVariableBooleanValue() &&
+                variable == literal.variable &&
                 isNegated() == literal.isNegated();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getIndex(), getVariableBooleanValue(), isNegated());
+        return Objects.hash(getIndex(), variable, isNegated());
     }
 
     public boolean isNegationOf(Literal literal) {
         return getIndex() == literal.getIndex()
                 && isNegated() != literal.isNegated();
+    }
+
+    public boolean getLiteralTrueByNegationStatus() {
+        return !isNegated();
     }
 }
