@@ -24,15 +24,16 @@ public class Main {
             Checker checker = new Checker();
             Solver solver = new Solver();
             Assignment assignment;
+            Formula newFormula = new Formula(readFormula);
             if (checker.is2SAT(readFormula)) {
                 System.out.println("Given CNF is: 2SAT");
                 assignment = solver.solve2SAT(readFormula);
                 printAndValidateAssignment(readFormula, assignment, checker);
             } else if (checker.isHornSAT(readFormula)) {
                 System.out.println("Given CNF is: HornSAT");
-                Formula newFormula = new Formula(readFormula);
                 assignment = solver.solveHornSAT(newFormula);
                 printAndValidateAssignment(newFormula, assignment, checker);
+                System.out.println("Linear Horn Solution: ");
                 assignment = solver.solveHornSATLinear(readFormula);
                 printAndValidateAssignment(readFormula, assignment, checker);
             } else {
@@ -40,9 +41,6 @@ public class Main {
             }
             System.out.println("Brute Force Solution (Classic):");
             assignment = solver.solveGeneralSATBruteForceClassic(readFormula);
-            printAndValidateAssignment(readFormula, assignment, checker);
-            System.out.println("Brute Force Solution (DPLL):");
-            assignment = solver.solveGeneralSATBruteForceDPLL(readFormula);
             printAndValidateAssignment(readFormula, assignment, checker);
         } catch (UnsatisfiableFormulaException e) {
             e.printStackTrace();

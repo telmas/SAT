@@ -1,7 +1,6 @@
 package alg.sat.entity;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Formula {
     private int clausesCount;
@@ -91,17 +90,5 @@ public class Formula {
 
     public void setImplicationLeftSideLiteralIndexesMap(Map<Integer, HashSet<Clause>> implicationLeftSideLiteralIndexesMap) {
         this.implicationLeftSideLiteralIndexesMap = implicationLeftSideLiteralIndexesMap;
-    }
-
-    public List<Clause> getUnitClauses() {
-        return getClauses().stream().filter(clause -> clause.getLiterals().size() == 1).collect(Collectors.toList());
-    }
-
-    public Set<Literal> getPureLiterals() {
-        List<Literal> allLiterals = getAllLiterals();
-        return allLiterals
-                .stream()
-                .filter(literal -> Collections.frequency(allLiterals, new Literal(literal.getIndex(), !literal.isNegated())) == 0)
-                .collect(Collectors.toSet());
     }
 }
