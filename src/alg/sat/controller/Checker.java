@@ -28,18 +28,15 @@ public class Checker {
 
     //assumption: always 2 literals per clause
     public boolean is2SAT(Formula formula) {
-        boolean violatingClauseFound = false;
         for (Clause clause : formula.getClauses()) {
             if (clause.getLiterals().size() != 2) {
-                violatingClauseFound = true;
-                break;
+                return false;
             }
         }
-        return !violatingClauseFound;
+        return true;
     }
 
     public boolean isHornSAT(Formula formula) {
-        boolean violatingClauseFound = false;
         for (Clause clause : formula.getClauses()) {
             long count = 0L;
             for (Literal literal : clause.getLiterals()) {
@@ -47,11 +44,10 @@ public class Checker {
                     count++;
                 }
                 if (count > 1) {
-                    violatingClauseFound = true;
-                    break;
+                    return false;
                 }
             }
         }
-        return !violatingClauseFound;
+        return true;
     }
 }

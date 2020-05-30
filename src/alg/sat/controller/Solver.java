@@ -8,12 +8,12 @@ import java.util.*;
 
 public class Solver {
 
-    public Assignment solveGeneralSATBruteForceClassic(Formula formula) throws UnsatisfiableFormulaException {
+    public Assignment solveGeneralSAT(Formula formula) throws UnsatisfiableFormulaException {
         Checker checker = new Checker();
-        for (BigInteger bi = BigInteger.valueOf(0);
-             bi.compareTo(BigInteger.valueOf((long) Math.pow(2, formula.getVariablesCont()))) < 0;
-             bi = bi.add(BigInteger.ONE)) {
-            BitSet bitSet = BitSet.valueOf(new long[]{bi.longValue()});
+        for (BigInteger bigIndex = BigInteger.valueOf(0);
+             bigIndex.compareTo(BigInteger.valueOf((long) Math.pow(2, formula.getVariablesCont()))) < 0;
+             bigIndex = bigIndex.add(BigInteger.ONE)) {
+            BitSet bitSet = BitSet.valueOf(new long[]{bigIndex.longValue()});
             Assignment assignment = new Assignment(formula, bitSet);
             if (checker.checkAssignment(formula, assignment)) {
                 return assignment;
@@ -143,14 +143,14 @@ public class Solver {
 
         for (Clause clause : formula.getClauses()) {
             if (clause.getLiterals().stream().allMatch(Literal::isNegated)) {
-                boolean expression = false;
+                boolean clauseSatisfied = false;
                 for (Literal literal :clause.getLiterals()) {
-                    expression = !assignment.getSolution().get(literal.getIndex());
-                    if (expression) {
+                    clauseSatisfied = !assignment.getSolution().get(literal.getIndex());
+                    if (clauseSatisfied) {
                         break;
                     }
                 }
-                if(!expression) {
+                if(!clauseSatisfied) {
                     throw new UnsatisfiableFormulaException("Given HornSAT formula is unsatisfiable");
                 }
             }

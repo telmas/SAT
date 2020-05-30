@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SATSolvers:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SATSolvers_jar</output-path>
+    <root id="archive" name="SATSolvers.jar">
+      <element id="module-output" name="SATSolvers" />
+    </root>
+  </artifact>
+</component>
