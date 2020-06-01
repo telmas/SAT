@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +50,7 @@ public class Reader {
                     }
                 }
                 clause.setLiterals(literals);
+                clause.setLiteralSet(new HashSet<>(literals));
                 if (clause.getLiterals().size() == 1 && !clause.getLiterals().get(0).isNegated()) {
                     formula.getNoTailClauseLiteralIndexes().add(clause.getLiterals().get(0).getIndex());
                 }

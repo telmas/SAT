@@ -129,11 +129,12 @@ public class Solver {
 
             if (!formula.getImplicationLeftSideLiteralIndexesMap().isEmpty()) {
                 for (Clause clause : formula.getImplicationLeftSideLiteralIndexesMap().get(index)) {
-                    clause.getLiterals().remove(new Literal(index, true));
-                    if (clause.getLiterals().size() == 1 &&
-                            !clause.getLiterals().get(0).isNegated() &&
-                            clause.getLiterals().get(0).getIndex() != index) {
-                        noTailClauseLiteralIndexes.add(clause.getLiterals().get(0).getIndex());
+                    clause.getLiteralSet().remove(new Literal(index, true));
+                    if (clause.isEmptyImplication(index)) {
+                        for (Literal literal: clause.getLiteralSet()) {
+                            noTailClauseLiteralIndexes.add(literal.getIndex());
+                            break;
+                        }
                     }
                 }
             }
