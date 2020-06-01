@@ -63,9 +63,7 @@ public class Solver {
         if (satisfiable) {
             Assignment candidateAssignment = new Assignment();
             TreeMap<Integer, Literal> post = graph.getPost();
-            TreeMap<Integer, Literal> reversePost = new TreeMap<>();
-            reversePost.putAll(post);//don't change
-            reversePost.values().forEach(vertex -> candidateAssignment.getSolution().putIfAbsent(vertex.getIndex(), !vertex.isNegated()));
+            post.values().forEach(vertex -> candidateAssignment.getSolution().put(vertex.getIndex(), !vertex.isNegated()));
             return candidateAssignment;
         }
         throw new UnsatisfiableFormulaException("Given 2SAT formula is unsatisfiable");

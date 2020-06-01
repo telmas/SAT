@@ -34,9 +34,9 @@ public class Main {
                     printAndValidateAssignment(readFormula, assignment, checker);
                 } else if (checker.isHornSAT(readFormula)) {
                     System.out.println("Given CNF is: HornSAT");
-                    assignment = solver.solveHornSAT(newFormula);
-                    printAndValidateAssignment(newFormula, assignment, checker);
-                    System.out.println("Horn Solution: ");
+//                    assignment = solver.solveHornSAT(newFormula);
+//                    printAndValidateAssignment(newFormula, assignment, checker);
+//                    System.out.println("Horn Solution: ");
                     assignment = solver.solveHornSATLinear(readFormula);
                     printAndValidateAssignment(readFormula, assignment, checker);
                 } else {
@@ -46,7 +46,7 @@ public class Main {
                     printAndValidateAssignment(readFormula, assignment, checker);
                 }
             } catch (UnsatisfiableFormulaException e) {
-                e.printStackTrace();
+                System.out.println("Satisfiable? No");
             }
             System.out.print("\nRun solver again? [Y/N]: ");
             Scanner scanner = new Scanner(System. in);

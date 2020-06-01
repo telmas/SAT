@@ -61,7 +61,9 @@ public class Assignment {
         @Override
         public String toString() {
             final StringBuilder buffer = new StringBuilder(nbits);
-            IntStream.range(0, nbits).mapToObj(i -> get(i) ? '1' : '0').forEach(obj -> buffer.append(obj).append(", "));
+            IntStream.range(0, nbits)
+                    .mapToObj(i -> get(i) ? '1' : '0')
+                    .forEach(obj -> buffer.append(obj).append(", "));
             return buffer.toString().replaceAll(", $", "");
         }
     }
