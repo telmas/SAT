@@ -126,7 +126,6 @@ public class Solver {
         while (!noTailClauseLiteralIndexes.isEmpty()) {
             Integer index = noTailClauseLiteralIndexes.remove(0);
             assignment.getSolution().put(index, true);
-
             if (!formula.getImplicationLeftSideLiteralIndexesMap().isEmpty()) {
                 for (Clause clause : formula.getImplicationLeftSideLiteralIndexesMap().get(index)) {
                     clause.getLiteralSet().remove(new Literal(index, true));

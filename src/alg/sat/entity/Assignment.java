@@ -37,7 +37,7 @@ public class Assignment {
             }
         });
         String s = "Assignment" + solution;
-        String b = "Assignment{" + "Binary:" + fixedSizeBitSet + '}';
+        String b = "Assignment{" + "Bits:" + fixedSizeBitSet + '}';
         return s + "\n" + b;
     }
 
